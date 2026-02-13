@@ -3,265 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DubManga - English Dub Manga Reader</title>
+    <title>DubManga</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Bangers&family=Inter:wght@400;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg-primary: #0f0f13;
-            --bg-secondary: #1a1a24;
-            --bg-card: #252532;
+            --bg: #0a0a0f;
+            --card: #151520;
             --accent: #ff6b35;
-            --accent-glow: rgba(255, 107, 53, 0.3);
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --border: #2a2a3a;
+            --text: #ffffff;
+            --muted: #888899;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
         }
         
-        /* Navigation */
-        .navbar {
+        /* Nav */
+        nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 15, 19, 0.95);
+            background: rgba(10,10,15,0.9);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            z-index: 1000;
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            z-index: 100;
+            border-bottom: 1px solid #222;
         }
         
         .logo {
-            font-family: 'Bangers', cursive;
-            font-size: 2rem;
+            font-size: 1.5rem;
+            font-weight: 800;
             color: var(--accent);
-            text-shadow: 0 0 20px var(--accent-glow);
-            letter-spacing: 2px;
             cursor: pointer;
         }
         
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-        
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-            position: relative;
-        }
-        
-        .nav-links a:hover, .nav-links a.active {
-            color: var(--accent);
-        }
-        
-        .search-bar {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 25px;
+        nav input {
+            background: var(--card);
+            border: 1px solid #333;
             padding: 0.5rem 1rem;
-            color: var(--text-primary);
-            width: 250px;
-            outline: none;
-            transition: all 0.3s;
-        }
-        
-        .search-bar:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
-        
-        /* Main Container */
-        .container {
-            margin-top: 80px;
-            padding: 2rem;
-            max-width: 1400px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-card) 100%);
             border-radius: 20px;
+            color: var(--text);
+            width: 200px;
+        }
+        
+        /* Layout */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 100px 2rem 2rem;
+        }
+        
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--card), #1a1a2e);
             padding: 3rem;
+            border-radius: 20px;
             margin-bottom: 3rem;
-            border: 1px solid var(--border);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            right: -10%;
-            width: 500px;
-            height: 500px;
-            background: var(--accent);
-            opacity: 0.1;
-            border-radius: 50%;
-            filter: blur(80px);
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
+            border: 1px solid #222;
         }
         
         .hero h1 {
-            font-size: 3rem;
+            font-size: 2.5rem;
             margin-bottom: 1rem;
-            background: linear-gradient(45deg, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
         }
         
         .hero p {
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            max-width: 600px;
-            margin-bottom: 2rem;
+            color: var(--muted);
+            margin-bottom: 1.5rem;
+            max-width: 500px;
         }
         
-        .cta-button {
+        .btn {
             background: var(--accent);
             color: white;
             border: none;
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-weight: 800;
-            font-size: 1.1rem;
+            padding: 0.8rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px var(--accent-glow);
+            transition: transform 0.2s;
         }
         
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 25px var(--accent-glow);
+        .btn:hover { transform: translateY(-2px); }
+        
+        /* Grid */
+        h2 {
+            margin: 2rem 0 1rem;
+            font-size: 1.3rem;
         }
         
-        /* Manga Grid */
-        .section-title {
-            font-size: 1.8rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .section-title::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
-            margin-left: 1rem;
-        }
-        
-        .manga-grid {
+        .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 1.5rem;
         }
         
-        .manga-card {
-            background: var(--bg-card);
-            border-radius: 15px;
+        .card {
+            background: var(--card);
+            border-radius: 12px;
             overflow: hidden;
-            border: 1px solid var(--border);
-            transition: all 0.3s;
             cursor: pointer;
-            position: relative;
+            transition: all 0.3s;
+            border: 1px solid #222;
         }
         
-        .manga-card:hover {
+        .card:hover {
             transform: translateY(-5px);
             border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         
-        .manga-cover {
-            width: 100%;
-            height: 280px;
-            background: linear-gradient(45deg, #2a2a3a, #3a3a4a);
+        .cover {
+            height: 240px;
+            background: linear-gradient(135deg, #2a2a3a, #1f1f2e);
             position: relative;
-            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
         }
         
-        .manga-cover img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .dub-badge {
+        .badge {
             position: absolute;
-            top: 10px;
-            right: 10px;
+            top: 8px;
+            right: 8px;
             background: var(--accent);
-            color: white;
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        
-        .manga-info {
-            padding: 1.2rem;
-        }
-        
-        .manga-title {
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
             font-weight: 700;
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+        }
+        
+        .info { padding: 1rem; }
+        
+        .title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         
-        .manga-meta {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+        .meta {
+            color: var(--muted);
+            font-size: 0.85rem;
             display: flex;
             justify-content: space-between;
         }
         
-        .chapter-count {
-            color: var(--accent);
-            font-weight: 600;
-        }
-        
-        /* Reader Modal */
-        .reader-modal {
+        /* Reader */
+        .reader {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-primary);
-            z-index: 2000;
+            background: var(--bg);
+            z-index: 200;
             overflow-y: auto;
         }
         
@@ -269,73 +176,47 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(15, 15, 19, 0.95);
-            backdrop-filter: blur(10px);
+            background: rgba(10,10,15,0.95);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border);
-            z-index: 2001;
-        }
-        
-        .reader-controls {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-        
-        .control-btn {
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            color: var(--text-primary);
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-weight: 600;
-        }
-        
-        .control-btn:hover {
-            background: var(--accent);
-            border-color: var(--accent);
+            z-index: 201;
+            border-bottom: 1px solid #222;
         }
         
         .reader-content {
             max-width: 800px;
-            margin: 100px auto 50px;
+            margin: 80px auto 2rem;
             padding: 0 1rem;
         }
         
-        .manga-page {
-            background: var(--bg-card);
+        .page {
+            background: var(--card);
             border-radius: 10px;
             margin-bottom: 2rem;
             overflow: hidden;
-            border: 1px solid var(--border);
-            position: relative;
+            border: 1px solid #333;
         }
         
-        .page-image {
-            width: 100%;
-            display: block;
-            background: #2a2a3a;
-            min-height: 600px;
+        .page-img {
+            height: 500px;
+            background: linear-gradient(135deg, #252535, #1a1a25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+            font-size: 1.2rem;
         }
         
-        .dub-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
-            padding: 3rem 2rem 2rem;
-            color: white;
+        .dub-bar {
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
         }
         
-        .voice-actor {
+        .actor {
             color: var(--accent);
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
             display: flex;
@@ -343,281 +224,190 @@
             gap: 0.5rem;
         }
         
-        .voice-actor::before {
-            content: '🔊';
-            font-size: 1.2rem;
+        .waves {
+            display: flex;
+            gap: 2px;
+            align-items: end;
+            height: 12px;
         }
         
-        .dub-text {
-            font-size: 1.3rem;
-            line-height: 1.6;
+        .wave {
+            width: 2px;
+            background: var(--accent);
+            animation: wave 0.4s ease infinite;
+        }
+        
+        .wave:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .wave:nth-child(2) { height: 10px; animation-delay: 0.1s; }
+        .wave:nth-child(3) { height: 5px; animation-delay: 0.2s; }
+        
+        @keyframes wave {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(1.8); }
+        }
+        
+        .dialogue {
+            font-size: 1.1rem;
             font-style: italic;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
         
-        .page-number {
-            text-align: center;
-            color: var(--text-secondary);
-            margin: 2rem 0;
-            font-weight: 600;
-        }
-        
-        .nav-arrows {
+        .nav-btn {
             position: fixed;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(255, 107, 53, 0.9);
+            background: var(--accent);
             color: white;
+            border: none;
             width: 50px;
             height: 50px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
             cursor: pointer;
             font-size: 1.5rem;
-            transition: all 0.3s;
-            z-index: 2001;
-            border: none;
+            z-index: 202;
         }
         
-        .nav-arrows:hover {
-            transform: translateY(-50%) scale(1.1);
-            background: var(--accent);
-        }
+        .nav-btn:hover { background: #ff8555; }
+        .prev { left: 20px; }
+        .next { right: 20px; }
         
-        .prev-btn { left: 20px; }
-        .next-btn { right: 20px; }
-        
-        /* Audio Visualizer Animation */
-        .audio-viz {
-            display: inline-flex;
-            gap: 3px;
-            align-items: end;
-            height: 20px;
-            margin-left: 10px;
-        }
-        
-        .bar {
-            width: 3px;
-            background: var(--accent);
-            animation: sound 0.5s ease-in-out infinite;
-        }
-        
-        .bar:nth-child(1) { height: 10px; animation-delay: 0s; }
-        .bar:nth-child(2) { height: 15px; animation-delay: 0.1s; }
-        .bar:nth-child(3) { height: 8px; animation-delay: 0.2s; }
-        .bar:nth-child(4) { height: 12px; animation-delay: 0.3s; }
-        
-        @keyframes sound {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(1.5); }
-        }
-        
-        /* Responsive */
         @media (max-width: 768px) {
-            .manga-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 1rem;
-            }
-            
-            .hero h1 { font-size: 2rem; }
-            .nav-links { display: none; }
-            .search-bar { width: 150px; }
+            .grid { grid-template-columns: repeat(2, 1fr); }
+            .hero h1 { font-size: 1.8rem; }
+            nav input { width: 120px; }
+            .page-img { height: 350px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="logo" onclick="showLibrary()">DUBMANGA</div>
-        <div class="nav-links">
-            <a href="#" class="active" onclick="showLibrary()">Library</a>
-            <a href="#">Latest</a>
-            <a href="#">Popular</a>
-            <a href="#">Bookmarks</a>
-        </div>
-        <input type="text" class="search-bar" placeholder="Search manga..." id="searchInput">
+    <nav>
+        <div class="logo" onclick="closeReader()">DUBMANGA</div>
+        <input type="text" id="search" placeholder="Search..." oninput="filterManga(this.value)">
     </nav>
 
-    <!-- Main Container -->
-    <div class="container" id="libraryView">
-        
-        <!-- Hero Section -->
+    <div class="container" id="library">
         <div class="hero">
-            <div class="hero-content">
-                <h1>Experience Manga in English Dub</h1>
-                <p>Immerse yourself in professionally voice-acted manga with synchronized text overlays. Read and listen to your favorite stories like never before.</p>
-                <button class="cta-button" onclick="openReader('Cyber Samurai')">Start Reading Now</button>
-            </div>
+            <h1>English Dub Manga</h1>
+            <p>Read along with professional voice acting. Experience manga like never before.</p>
+            <button class="btn" onclick="openReader('Cyber Samurai')">Start Reading</button>
         </div>
 
-        <!-- Trending Section -->
-        <h2 class="section-title">🔥 Trending Now</h2>
-        <div class="manga-grid" id="trendingGrid">
-            <!-- Populated by JS -->
-        </div>
+        <h2>🔥 Trending</h2>
+        <div class="grid" id="trending"></div>
 
-        <!-- New Releases -->
-        <h2 class="section-title">✨ New English Dubs</h2>
-        <div class="manga-grid" id="newGrid">
-            <!-- Populated by JS -->
-        </div>
+        <h2>✨ New Dubs</h2>
+        <div class="grid" id="new"></div>
     </div>
 
-    <!-- Reader Modal -->
-    <div class="reader-modal" id="readerModal">
+    <div class="reader" id="reader">
         <div class="reader-header">
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                <button class="control-btn" onclick="closeReader()">← Back</button>
-                <h3 id="readerTitle">Manga Title</h3>
-            </div>
-            <div class="reader-controls">
-                <button class="control-btn">Chapter 1</button>
-                <button class="control-btn" style="background: var(--accent);">🔊 Audio: ON</button>
-                <button class="control-btn">Settings</button>
-            </div>
+            <button class="btn" onclick="closeReader()">← Back</button>
+            <span id="rTitle">Title</span>
+            <button class="btn">🔊 Audio On</button>
         </div>
-
-        <button class="nav-arrows prev-btn" onclick="prevPage()">‹</button>
-        <button class="nav-arrows next-btn" onclick="nextPage()">›</button>
-
-        <div class="reader-content" id="readerContent">
-            <!-- Pages populated by JS -->
-        </div>
+        
+        <button class="nav-btn prev" onclick="changePage(-1)">‹</button>
+        <button class="nav-btn next" onclick="changePage(1)">›</button>
+        
+        <div class="reader-content" id="pages"></div>
     </div>
 
     <script>
-        // Manga Data
-        const mangaData = [
-            { title: "Cyber Samurai", chapters: 24, genre: "Action", color: "#ff6b35", trending: true },
-            { title: "Neon Dreams", chapters: 18, genre: "Sci-Fi", color: "#4ecdc4", trending: true },
-            { title: "Shadow Academy", chapters: 42, genre: "Dark Fantasy", color: "#a8e6cf", trending: true },
-            { title: "Mecha Heart", chapters: 12, genre: "Romance", color: "#ff8b94", trending: false },
-            { title: "Dragon's Heir", chapters: 156, genre: "Adventure", color: "#ffd93d", trending: true },
-            { title: "Ghost Protocol", chapters: 8, genre: "Thriller", color: "#6bcf7f", trending: false },
-            { title: "Starlight Witch", chapters: 33, genre: "Magic", color: "#c7ceea", trending: false },
-            { title: "Blade Runner 2099", chapters: 15, genre: "Cyberpunk", color: "#ff6b9d", trending: true }
+        const manga = [
+            { t: "Cyber Samurai", ch: 24, g: "Action", tr: true },
+            { t: "Neon Dreams", ch: 18, g: "Sci-Fi", tr: true },
+            { t: "Shadow Academy", ch: 42, g: "Fantasy", tr: true },
+            { t: "Mecha Heart", ch: 12, g: "Romance", tr: false },
+            { t: "Dragon's Heir", ch: 156, g: "Adventure", tr: true },
+            { t: "Ghost Protocol", ch: 8, g: "Thriller", tr: false },
+            { t: "Starlight Witch", ch: 33, g: "Magic", tr: false },
+            { t: "Blade Runner", ch: 15, g: "Cyberpunk", tr: true }
         ];
 
-        // Sample dialogue for demo
-        const sampleDialogues = [
-            { text: "I won't let you destroy this city! Not while I still stand!", actor: "Alex Chen (EN)" },
-            { text: "Heh... you really think you can stop me with that rusted blade?", actor: "Marcus Reed (EN)" },
-            { text: "The prophecy... it was true all along. The stars are aligning.", actor: "Sarah Miller (EN)" },
-            { text: "Activate protocol seven. We don't have much time.", actor: "System Voice (EN)" }
+        const lines = [
+            { txt: "I won't let you destroy this city!", actor: "Alex Chen" },
+            { txt: "You think that rusted blade can stop me?", actor: "Marcus Reed" },
+            { txt: "The prophecy was true all along...", actor: "Sarah Miller" },
+            { txt: "Activate protocol seven. Now!", actor: "System" }
         ];
 
-        let currentPage = 1;
-        const totalPages = 5;
+        let current = 1, total = 5;
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderLibrary();
+        function render() {
+            const tr = document.getElementById('trending');
+            const ne = document.getElementById('new');
+            tr.innerHTML = '';
+            ne.innerHTML = '';
             
-            // Search functionality
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                const term = e.target.value.toLowerCase();
-                renderLibrary(term);
-            });
-        });
-
-        function renderLibrary(searchTerm = '') {
-            const trending = document.getElementById('trendingGrid');
-            const newReleases = document.getElementById('newGrid');
-            
-            trending.innerHTML = '';
-            newReleases.innerHTML = '';
-
-            mangaData.forEach((manga, index) => {
-                if (searchTerm && !manga.title.toLowerCase().includes(searchTerm)) return;
-                
-                const card = createMangaCard(manga);
-                
-                if (manga.trending) {
-                    trending.appendChild(card);
-                } else {
-                    newReleases.appendChild(card);
-                }
+            manga.forEach(m => {
+                const div = document.createElement('div');
+                div.className = 'card';
+                div.onclick = () => openReader(m.t);
+                div.innerHTML = `
+                    <div class="cover">📖<span class="badge">DUB</span></div>
+                    <div class="info">
+                        <div class="title">${m.t}</div>
+                        <div class="meta"><span>${m.g}</span><span>${m.ch} Ch</span></div>
+                    </div>
+                `;
+                (m.tr ? tr : ne).appendChild(div);
             });
         }
 
-        function createMangaCard(manga) {
-            const card = document.createElement('div');
-            card.className = 'manga-card';
-            card.onclick = () => openReader(manga.title);
-            
-            card.innerHTML = `
-                <div class="manga-cover" style="background: linear-gradient(135deg, ${manga.color}22, ${manga.color}44);">
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4rem; opacity: 0.3;">
-                        📖
-                    </div>
-                    <span class="dub-badge">EN DUB</span>
-                </div>
-                <div class="manga-info">
-                    <div class="manga-title">${manga.title}</div>
-                    <div class="manga-meta">
-                        <span>${manga.genre}</span>
-                        <span class="chapter-count">${manga.chapters} Ch</span>
-                    </div>
-                </div>
-            `;
-            
-            return card;
+        function filterManga(v) {
+            const term = v.toLowerCase();
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(term) ? 'block' : 'none';
+            });
         }
 
-        function openReader(title) {
-            document.getElementById('readerTitle').textContent = title;
-            document.getElementById('readerModal').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            currentPage = 1;
+        function openReader(t) {
+            document.getElementById('rTitle').textContent = t;
+            document.getElementById('reader').style.display = 'block';
+            current = 1;
             renderPages();
         }
 
         function closeReader() {
-            document.getElementById('readerModal').style.display = 'none';
-            document.body.style.overflow = 'auto';
+            document.getElementById('reader').style.display = 'none';
         }
 
         function renderPages() {
-            const container = document.getElementById('readerContent');
-            container.innerHTML = '';
-            
-            // Generate 5 pages
-            for (let i = 1; i <= totalPages; i++) {
-                const dialogue = sampleDialogues[i % sampleDialogues.length];
-                const page = document.createElement('div');
-                page.className = 'manga-page';
-                
-                page.innerHTML = `
-                    <div class="page-image" style="background: linear-gradient(135deg, #2a2a3a 0%, #1a1a24 100%); min-height: 600px; display: flex; align-items: center; justify-content: center; color: #444; font-size: 1.5rem;">
-                        [Manga Page ${i} - Artwork Placeholder]
-                    </div>
-                    <div class="dub-overlay">
-                        <div class="voice-actor">
-                            ${dialogue.actor}
-                            <span class="audio-viz">
-                                <span class="bar"></span>
-                                <span class="bar"></span>
-                                <span class="bar"></span>
-                                <span class="bar"></span>
-                            </span>
+            const p = document.getElementById('pages');
+            p.innerHTML = '';
+            for(let i=1; i<=total; i++) {
+                const l = lines[i % lines.length];
+                p.innerHTML += `
+                    <div class="page">
+                        <div class="page-img">Page ${i}</div>
+                        <div class="dub-bar">
+                            <div class="actor">
+                                ${l.actor}
+                                <span class="waves"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span>
+                            </div>
+                            <div class="dialogue">"${l.txt}"</div>
                         </div>
-                        <div class="dub-text">"${dialogue.text}"</div>
                     </div>
                 `;
-                
-                container.appendChild(page);
-                
-                // Add page number indicator between pages
-                if (i < totalPages) {
-                    const num = document.createElement('div');
-                    num.className = 'page-number';
-                    num.textContent = `- Page ${i} -`;
-                    container.appendChild(num);
-                }
             }
         }
 
-    
+        function changePage(d) {
+            current = Math.max(1, Math.min(total, current + d));
+            document.getElementById('pages').children[current-1].scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Keyboard nav
+        document.addEventListener('keydown', e => {
+            if(document.getElementById('reader').style.display === 'block') {
+                if(e.key === 'ArrowRight') changePage(1);
+                if(e.key === 'ArrowLeft') changePage(-1);
+                if(e.key === 'Escape') closeReader();
+            }
+        });
+
+        render();
+    </script>
+
+</body>
+</html>

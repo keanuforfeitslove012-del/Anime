@@ -13,6 +13,7 @@
             --bg: #0a0a0f;
             --card: #151520;
             --accent: #ff6b35;
+            --solo: #7b2cbf;
             --text: #ffffff;
             --muted: #888899;
         }
@@ -29,7 +30,7 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(10,10,15,0.9);
+            background: rgba(10,10,15,0.95);
             backdrop-filter: blur(10px);
             padding: 1rem 2rem;
             display: flex;
@@ -64,11 +65,22 @@
         
         /* Hero */
         .hero {
-            background: linear-gradient(135deg, var(--card), #1a1a2e);
+            background: linear-gradient(135deg, var(--solo), #1a1a2e);
             padding: 3rem;
             border-radius: 20px;
             margin-bottom: 3rem;
-            border: 1px solid #222;
+            border: 1px solid #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '👑';
+            position: absolute;
+            right: -20px;
+            top: -20px;
+            font-size: 200px;
+            opacity: 0.1;
         }
         
         .hero h1 {
@@ -77,7 +89,7 @@
         }
         
         .hero p {
-            color: var(--muted);
+            color: rgba(255,255,255,0.8);
             margin-bottom: 1.5rem;
             max-width: 500px;
         }
@@ -90,15 +102,23 @@
             border-radius: 25px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.2s;
+            transition: all 0.2s;
         }
         
-        .btn:hover { transform: translateY(-2px); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,107,53,0.4); }
+        
+        .btn-solo {
+            background: var(--solo);
+            box-shadow: 0 5px 20px rgba(123,44,191,0.4);
+        }
         
         /* Grid */
         h2 {
-            margin: 2rem 0 1rem;
+            margin: 2.5rem 0 1rem;
             font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         
         .grid {
@@ -114,21 +134,38 @@
             cursor: pointer;
             transition: all 0.3s;
             border: 1px solid #222;
+            position: relative;
         }
         
         .card:hover {
             transform: translateY(-5px);
             border-color: var(--accent);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        
+        .card.solo:hover {
+            border-color: var(--solo);
+            box-shadow: 0 10px 30px rgba(123,44,191,0.3);
         }
         
         .cover {
-            height: 240px;
-            background: linear-gradient(135deg, #2a2a3a, #1f1f2e);
+            height: 260px;
             position: relative;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
+            align-items: flex-end;
+            padding: 1rem;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .cover::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
         }
         
         .badge {
@@ -140,6 +177,34 @@
             border-radius: 12px;
             font-size: 0.7rem;
             font-weight: 700;
+            z-index: 2;
+        }
+        
+        .badge-solo {
+            background: var(--solo);
+            box-shadow: 0 0 10px rgba(123,44,191,0.5);
+        }
+        
+        .season-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            background: rgba(0,0,0,0.8);
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            z-index: 2;
+            border: 1px solid var(--solo);
+            color: var(--solo);
+        }
+        
+        .char-name {
+            position: relative;
+            z-index: 1;
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
         }
         
         .info { padding: 1rem; }
@@ -159,6 +224,15 @@
             justify-content: space-between;
         }
         
+        .chapters {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .solo-chapters {
+            color: var(--solo);
+        }
+        
         /* Reader */
         .reader {
             display: none;
@@ -176,18 +250,18 @@
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(10,10,15,0.95);
+            background: rgba(10,10,15,0.98);
             padding: 1rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 201;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid #333;
         }
         
         .reader-content {
             max-width: 800px;
-            margin: 80px auto 2rem;
+            margin: 100px auto 2rem;
             padding: 0 1rem;
         }
         
@@ -201,22 +275,32 @@
         
         .page-img {
             height: 500px;
-            background: linear-gradient(135deg, #252535, #1a1a25);
+            background-size: cover;
+            background-position: center;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #444;
-            font-size: 1.2rem;
+            position: relative;
+        }
+        
+        .page-img::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
         }
         
         .dub-bar {
             padding: 1.5rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            background: rgba(0,0,0,0.9);
         }
         
         .actor {
             color: var(--accent);
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
             display: flex;
@@ -226,29 +310,31 @@
         
         .waves {
             display: flex;
-            gap: 2px;
+            gap: 3px;
             align-items: end;
-            height: 12px;
+            height: 15px;
         }
         
         .wave {
-            width: 2px;
+            width: 3px;
             background: var(--accent);
-            animation: wave 0.4s ease infinite;
+            animation: wave 0.5s ease infinite;
         }
         
-        .wave:nth-child(1) { height: 6px; animation-delay: 0s; }
-        .wave:nth-child(2) { height: 10px; animation-delay: 0.1s; }
-        .wave:nth-child(3) { height: 5px; animation-delay: 0.2s; }
+        .wave:nth-child(1) { height: 8px; animation-delay: 0s; }
+        .wave:nth-child(2) { height: 14px; animation-delay: 0.1s; }
+        .wave:nth-child(3) { height: 6px; animation-delay: 0.2s; }
+        .wave:nth-child(4) { height: 10px; animation-delay: 0.3s; }
         
         @keyframes wave {
             0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(1.8); }
+            50% { transform: scaleY(1.6); }
         }
         
         .dialogue {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             font-style: italic;
+            line-height: 1.5;
         }
         
         .nav-btn {
@@ -264,17 +350,33 @@
             cursor: pointer;
             font-size: 1.5rem;
             z-index: 202;
+            transition: all 0.2s;
         }
         
-        .nav-btn:hover { background: #ff8555; }
+        .nav-btn:hover { 
+            background: #ff8555; 
+            transform: translateY(-50%) scale(1.1);
+        }
+        
         .prev { left: 20px; }
         .next { right: 20px; }
+        
+        .solo-mode .nav-btn,
+        .solo-mode .actor,
+        .solo-mode .wave {
+            background: var(--solo);
+        }
+        
+        .solo-mode .nav-btn:hover {
+            background: #9d4edd;
+        }
         
         @media (max-width: 768px) {
             .grid { grid-template-columns: repeat(2, 1fr); }
             .hero h1 { font-size: 1.8rem; }
             nav input { width: 120px; }
             .page-img { height: 350px; }
+            .cover { height: 200px; }
         }
     </style>
 </head>
@@ -287,12 +389,16 @@
 
     <div class="container" id="library">
         <div class="hero">
-            <h1>English Dub Manga</h1>
-            <p>Read along with professional voice acting. Experience manga like never before.</p>
-            <button class="btn" onclick="openReader('Cyber Samurai')">Start Reading</button>
+            <h1>Solo Leveling</h1>
+            <p>Follow Sung Jin-Woo's journey from the weakest hunter to the Shadow Monarch. Experience both seasons with full English dub.</p>
+            <button class="btn btn-solo" onclick="openReader('Solo Leveling Season 1')">Read Season 1</button>
+            <button class="btn btn-solo" onclick="openReader('Solo Leveling Season 2')" style="margin-left: 10px; background: #5a189a;">Read Season 2</button>
         </div>
 
-        <h2>🔥 Trending</h2>
+        <h2>⚔️ Solo Leveling</h2>
+        <div class="grid" id="soloGrid"></div>
+
+        <h2>🔥 Trending Anime</h2>
         <div class="grid" id="trending"></div>
 
         <h2>✨ New Dubs</h2>
@@ -303,7 +409,7 @@
         <div class="reader-header">
             <button class="btn" onclick="closeReader()">← Back</button>
             <span id="rTitle">Title</span>
-            <button class="btn">🔊 Audio On</button>
+            <button class="btn" id="audioBtn">🔊 Audio On</button>
         </div>
         
         <button class="nav-btn prev" onclick="changePage(-1)">‹</button>
@@ -313,101 +419,164 @@
     </div>
 
     <script>
+        // Character images (using reliable anime image hosting)
+        const chars = {
+            jinwoo: 'https://wallpapers.com/images/hd/solo-leveling-sung-jin-woo-purple-fan-art-0c140v4k3e4s7q2u.jpg',
+            cha: 'https://wallpapers.com/images/hd/solo-leveling-cha-hae-in-pink-eyes-7q2u4x9m1n3p8k5j.jpg',
+            igris: 'https://wallpapers.com/images/hd/solo-leveling-igris-red-knight-9v8n2m4k1j7h3g6f.jpg',
+            beru: 'https://wallpapers.com/images/hd/solo-leveling-beru-ant-king-2w4e6r8t0y1u3i5o.jpg',
+            gojo: 'https://wallpapers.com/images/hd/jujutsu-kaisen-satoru-gojo-white-hair-6e5r7t9y2u4i8o1p.jpg',
+            luffy: 'https://wallpapers.com/images/hd/one-piece-monkey-d-luffy-smile-3q5w7e9r2t6y1u4i.jpg',
+            goku: 'https://wallpapers.com/images/hd/dragon-ball-z-goku-ultra-instinct-8i2u4y6t1r3e5w7q.jpg',
+            tanjiro: 'https://wallpapers.com/images/hd/demon-slayer-tanjiro-kamado-green-checkered-5t8y2u4i6o1p9l3k.jpg',
+            levi: 'https://wallpapers.com/images/hd/attack-on-titan-levi-ackerman-omni-directional-7h3j5k9l2m4n8b1v.jpg',
+            kaneki: 'https://wallpapers.com/images/hd/tokyo-ghoul-ken-kaneki-white-hair-mask-4g7h2j5k8l1m9n3b.jpg',
+            eren: 'https://wallpapers.com/images/hd/attack-on-titan-eren-yeager-titan-form-9k2l5m8n1b4v7c3x.jpg',
+            itadori: 'https://wallpapers.com/images/hd/jujutsu-kaisen-yuji-itadori-pink-hair-6j9k2l5m8n1b4v7c.jpg'
+        };
+
         const manga = [
-            { t: "Cyber Samurai", ch: 24, g: "Action", tr: true },
-            { t: "Neon Dreams", ch: 18, g: "Sci-Fi", tr: true },
-            { t: "Shadow Academy", ch: 42, g: "Fantasy", tr: true },
-            { t: "Mecha Heart", ch: 12, g: "Romance", tr: false },
-            { t: "Dragon's Heir", ch: 156, g: "Adventure", tr: true },
-            { t: "Ghost Protocol", ch: 8, g: "Thriller", tr: false },
-            { t: "Starlight Witch", ch: 33, g: "Magic", tr: false },
-            { t: "Blade Runner", ch: 15, g: "Cyberpunk", tr: true }
+            // Solo Leveling
+            { t: "Solo Leveling S1", ch: 110, g: "Action", solo: true, season: 1, char: 'jinwoo', desc: "The Weakest Hunter" },
+            { t: "Solo Leveling S2", ch: 88, g: "Action", solo: true, season: 2, char: 'igris', desc: "Rise of the Monarch" },
+            { t: "Solo Leveling: Ragnarok", ch: 45, g: "Action", solo: true, season: 3, char: 'beru', desc: "Aftermath" },
+            
+            // Trending
+            { t: "Jujutsu Kaisen", ch: 243, g: "Dark Fantasy", tr: true, char: 'gojo' },
+            { t: "One Piece", ch: 1098, g: "Adventure", tr: true, char: 'luffy' },
+            { t: "Dragon Ball Super", ch: 103, g: "Action", tr: true, char: 'goku' },
+            { t: "Demon Slayer", ch: 205, g: "Dark Fantasy", tr: true, char: 'tanjiro' },
+            
+            // New
+            { t: "Attack on Titan", ch: 139, g: "Dark Fantasy", new: true, char: 'levi' },
+            { t: "Tokyo Ghoul", ch: 143, g: "Horror", new: true, char: 'kaneki' },
+            { t: "Chainsaw Man", ch: 157, g: "Dark Fantasy", new: true, char: 'eren' },
+            { t: "My Hero Academia", ch: 423, g: "Superhero", new: true, char: 'itadori' }
         ];
 
-        const lines = [
-            { txt: "I won't let you destroy this city!", actor: "Alex Chen" },
-            { txt: "You think that rusted blade can stop me?", actor: "Marcus Reed" },
-            { txt: "The prophecy was true all along...", actor: "Sarah Miller" },
-            { txt: "Activate protocol seven. Now!", actor: "System" }
+        const soloLines = {
+            1: [
+                { txt: "I alone level up.", actor: "Sung Jin-Woo (Aleks Le)" },
+                { txt: "Arise.", actor: "System Voice" },
+                { txt: "I will protect my family... no matter the cost.", actor: "Sung Jin-Woo" },
+                { txt: "The weak have no rights.", actor: "Kang Taeshik" },
+                { txt: "Shadow extraction successful.", actor: "System Voice" }
+            ],
+            2: [
+                { txt: "I am the Shadow Monarch.", actor: "Sung Jin-Woo" },
+                { txt: "My liege... your wish is my command.", actor: "Igris (Kaiji Tang)" },
+                { txt: "The Monarchs are coming. We must prepare.", actor: "Thomas Andre" },
+                { txt: "Beru, annihilate them.", actor: "Sung Jin-Woo" },
+                { txt: "It is an honor to serve you, my king.", actor: "Beru" }
+            ]
+        };
+
+        const regularLines = [
+            { txt: "I won't forgive anyone who hurts my friends!", actor: "Aleks Le (EN)" },
+            { txt: "You're already dead.", actor: "Matthew Mercer (EN)" },
+            { txt: "I will become the Pirate King!", actor: "Colleen Clinkenbeard (EN)" },
+            { txt: "Plus Ultra!", actor: "Justin Briner (EN)" },
+            { txt: "I am the hope of the universe!", actor: "Sean Schemmel (EN)" }
         ];
 
-        let current = 1, total = 5;
+        let current = 1, total = 5, isSolo = false, currentSeason = 1;
 
         function render() {
+            const solo = document.getElementById('soloGrid');
             const tr = document.getElementById('trending');
             const ne = document.getElementById('new');
+            
+            solo.innerHTML = '';
             tr.innerHTML = '';
             ne.innerHTML = '';
-            
+
             manga.forEach(m => {
                 const div = document.createElement('div');
-                div.className = 'card';
-                div.onclick = () => openReader(m.t);
+                div.className = m.solo ? 'card solo' : 'card';
+                div.onclick = () => openReader(m.t, m.solo, m.season);
+                
+                const img = chars[m.char] || chars.jinwoo;
+                const seasonBadge = m.solo ? `<span class="season-badge">S${m.season}</span>` : '';
+                const badgeClass = m.solo ? 'badge badge-solo' : 'badge';
+                
                 div.innerHTML = `
-                    <div class="cover">📖<span class="badge">DUB</span></div>
+                    <div class="cover" style="background-image: url('${img}');">
+                        ${seasonBadge}
+                        <span class="${badgeClass}">${m.solo ? 'SOLO' : 'DUB'}</span>
+                        <div class="char-name">${m.desc || m.g}</div>
+                    </div>
                     <div class="info">
                         <div class="title">${m.t}</div>
-                        <div class="meta"><span>${m.g}</span><span>${m.ch} Ch</span></div>
+                        <div class="meta">
+                            <span>${m.g}</span>
+                            <span class="${m.solo ? 'solo-chapters' : 'chapters'}">${m.ch} Ch</span>
+                        </div>
                     </div>
                 `;
-                (m.tr ? tr : ne).appendChild(div);
+                
+                if (m.solo) solo.appendChild(div);
+                else if (m.tr) tr.appendChild(div);
+                else if (m.new) ne.appendChild(div);
             });
         }
 
         function filterManga(v) {
             const term = v.toLowerCase();
             document.querySelectorAll('.card').forEach(c => {
-                c.style.display = c.querySelector('.title').textContent.toLowerCase().includes(term) ? 'block' : 'none';
+                const txt = c.querySelector('.title').textContent.toLowerCase();
+                c.style.display = txt.includes(term) ? 'block' : 'none';
             });
         }
 
-        function openReader(t) {
+        function openReader(t, solo = false, season = 1) {
+            isSolo = solo;
+            currentSeason = season;
             document.getElementById('rTitle').textContent = t;
             document.getElementById('reader').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            
+            const reader = document.getElementById('reader');
+            if (solo) reader.classList.add('solo-mode');
+            else reader.classList.remove('solo-mode');
+            
+            const audioBtn = document.getElementById('audioBtn');
+            audioBtn.textContent = solo ? '🔊 Solo Leveling Audio' : '🔊 Audio On';
+            if (solo) {
+                audioBtn.style.background = 'var(--solo)';
+                audioBtn.style.boxShadow = '0 0 20px rgba(123,44,191,0.4)';
+            } else {
+                audioBtn.style.background = 'var(--accent)';
+                audioBtn.style.boxShadow = 'none';
+            }
+            
             current = 1;
             renderPages();
         }
 
         function closeReader() {
             document.getElementById('reader').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            document.getElementById('reader').classList.remove('solo-mode');
         }
 
         function renderPages() {
             const p = document.getElementById('pages');
             p.innerHTML = '';
+            const lines = isSolo ? soloLines[currentSeason] || soloLines[1] : regularLines;
+            
             for(let i=1; i<=total; i++) {
                 const l = lines[i % lines.length];
+                const bg = isSolo ? `background: linear-gradient(135deg, #1a0b2e, #240046);` : '';
                 p.innerHTML += `
                     <div class="page">
-                        <div class="page-img">Page ${i}</div>
+                        <div class="page-img" style="${bg}">
+                            <span style="color: #444; font-size: 1.5rem;">${isSolo ? '⚔️' : '📖'} Page ${i}</span>
+                        </div>
                         <div class="dub-bar">
                             <div class="actor">
                                 ${l.actor}
-                                <span class="waves"><span class="wave"></span><span class="wave"></span><span class="wave"></span></span>
-                            </div>
-                            <div class="dialogue">"${l.txt}"</div>
-                        </div>
-                    </div>
-                `;
-            }
-        }
-
-        function changePage(d) {
-            current = Math.max(1, Math.min(total, current + d));
-            document.getElementById('pages').children[current-1].scrollIntoView({ behavior: 'smooth' });
-        }
-
-        // Keyboard nav
-        document.addEventListener('keydown', e => {
-            if(document.getElementById('reader').style.display === 'block') {
-                if(e.key === 'ArrowRight') changePage(1);
-                if(e.key === 'ArrowLeft') changePage(-1);
-                if(e.key === 'Escape') closeReader();
-            }
-        });
-
-        render();
-    </script>
-
-</body>
-</html>
+                                <span class="waves">
+                                    <span class="wave"></span>
+                                    <span class="wave"></span>
+                                    <span class="wave"></span>
+             

@@ -1,582 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DubManga</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        :root {
-            --bg: #0a0a0f;
-            --card: #151520;
-            --accent: #ff6b35;
-            --solo: #7b2cbf;
-            --text: #ffffff;
-            --muted: #888899;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-        }
-        
-        /* Nav */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10,10,15,0.95);
-            backdrop-filter: blur(10px);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            border-bottom: 1px solid #222;
-        }
-        
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            cursor: pointer;
-        }
-        
-        nav input {
-            background: var(--card);
-            border: 1px solid #333;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            color: var(--text);
-            width: 200px;
-        }
-        
-        /* Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 100px 2rem 2rem;
-        }
-        
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, var(--solo), #1a1a2e);
-            padding: 3rem;
-            border-radius: 20px;
-            margin-bottom: 3rem;
-            border: 1px solid #333;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '👑';
-            position: absolute;
-            right: -20px;
-            top: -20px;
-            font-size: 200px;
-            opacity: 0.1;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-        
-        .hero p {
-            color: rgba(255,255,255,0.8);
-            margin-bottom: 1.5rem;
-            max-width: 500px;
-        }
-        
-        .btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 25px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255,107,53,0.4); }
-        
-        .btn-solo {
-            background: var(--solo);
-            box-shadow: 0 5px 20px rgba(123,44,191,0.4);
-        }
-        
-        /* Grid */
-        h2 {
-            margin: 2.5rem 0 1rem;
-            font-size: 1.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 1.5rem;
-        }
-        
-        .card {
-            background: var(--card);
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s;
-            border: 1px solid #222;
-            position: relative;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        
-        .card.solo:hover {
-            border-color: var(--solo);
-            box-shadow: 0 10px 30px rgba(123,44,191,0.3);
-        }
-        
-        .cover {
-            height: 260px;
-            position: relative;
-            display: flex;
-            align-items: flex-end;
-            padding: 1rem;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        .cover::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 60%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        }
-        
-        .badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            background: var(--accent);
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            z-index: 2;
-        }
-        
-        .badge-solo {
-            background: var(--solo);
-            box-shadow: 0 0 10px rgba(123,44,191,0.5);
-        }
-        
-        .season-badge {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background: rgba(0,0,0,0.8);
-            padding: 0.2rem 0.6rem;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            z-index: 2;
-            border: 1px solid var(--solo);
-            color: var(--solo);
-        }
-        
-        .char-name {
-            position: relative;
-            z-index: 1;
-            font-weight: 700;
-            font-size: 1.1rem;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-        }
-        
-        .info { padding: 1rem; }
-        
-        .title {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        .meta {
-            color: var(--muted);
-            font-size: 0.85rem;
-            display: flex;
-            justify-content: space-between;
-        }
-        
-        .chapters {
-            color: var(--accent);
-            font-weight: 600;
-        }
-        
-        .solo-chapters {
-            color: var(--solo);
-        }
-        
-        /* Reader */
-        .reader {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg);
-            z-index: 200;
-            overflow-y: auto;
-        }
-        
-        .reader-header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10,10,15,0.98);
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 201;
-            border-bottom: 1px solid #333;
-        }
-        
-        .reader-content {
-            max-width: 800px;
-            margin: 100px auto 2rem;
-            padding: 0 1rem;
-        }
-        
-        .page {
-            background: var(--card);
-            border-radius: 10px;
-            margin-bottom: 2rem;
-            overflow: hidden;
-            border: 1px solid #333;
-        }
-        
-        .page-img {
-            height: 500px;
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        
-        .page-img::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 40%;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-        }
-        
-        .dub-bar {
-            padding: 1.5rem;
-            background: rgba(0,0,0,0.9);
-        }
-        
-        .actor {
-            color: var(--accent);
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .waves {
-            display: flex;
-            gap: 3px;
-            align-items: end;
-            height: 15px;
-        }
-        
-        .wave {
-            width: 3px;
-            background: var(--accent);
-            animation: wave 0.5s ease infinite;
-        }
-        
-        .wave:nth-child(1) { height: 8px; animation-delay: 0s; }
-        .wave:nth-child(2) { height: 14px; animation-delay: 0.1s; }
-        .wave:nth-child(3) { height: 6px; animation-delay: 0.2s; }
-        .wave:nth-child(4) { height: 10px; animation-delay: 0.3s; }
-        
-        @keyframes wave {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(1.6); }
-        }
-        
-        .dialogue {
-            font-size: 1.2rem;
-            font-style: italic;
-            line-height: 1.5;
-        }
-        
-        .nav-btn {
-            position: fixed;
-            top: 50%;
-            transform: translateY(-50%);
-            background: var(--accent);
-            color: white;
-            border: none;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.5rem;
-            z-index: 202;
-            transition: all 0.2s;
-        }
-        
-        .nav-btn:hover { 
-            background: #ff8555; 
-            transform: translateY(-50%) scale(1.1);
-        }
-        
-        .prev { left: 20px; }
-        .next { right: 20px; }
-        
-        .solo-mode .nav-btn,
-        .solo-mode .actor,
-        .solo-mode .wave {
-            background: var(--solo);
-        }
-        
-        .solo-mode .nav-btn:hover {
-            background: #9d4edd;
-        }
-        
-        @media (max-width: 768px) {
-            .grid { grid-template-columns: repeat(2, 1fr); }
-            .hero h1 { font-size: 1.8rem; }
-            nav input { width: 120px; }
-            .page-img { height: 350px; }
-            .cover { height: 200px; }
-        }
-    </style>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>FunZone Hub - Spider-Man Edition</title>
+   <style>
+       *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+       body{background:linear-gradient(135deg,#0a1628 0%,#1a3a5c 50%,#c41e3a 100%);min-height:100vh;color:#fff;overflow-x:hidden}
+       .container{max-width:800px;margin:0 auto;padding:20px}
+       h1{text-align:center;font-size:2.5em;text-shadow:0 0 20px #ff0000,2px 2px 4px #000;margin-bottom:10px;background:linear-gradient(to right,#fff,#87ceeb,#c41e3a);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+       .subtitle{text-align:center;color:#87ceeb;margin-bottom:30px;font-size:1.1em}
+       .card{background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border-radius:15px;padding:20px;margin:15px 0;border:1px solid rgba(255,255,255,0.2);box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+       h2{color:#ff6b6b;text-shadow:0 0 10px rgba(255,0,0,0.5);margin-bottom:15px;font-size:1.3em;display:flex;align-items:center;gap:10px}
+       .btn{background:linear-gradient(45deg,#c41e3a,#ff6b6b);border:none;padding:12px 25px;color:#fff;border-radius:25px;cursor:pointer;font-weight:bold;transition:all 0.3s;box-shadow:0 4px 15px rgba(196,30,58,0.4);text-transform:uppercase;letter-spacing:1px;margin:5px}
+       .btn:hover{transform:scale(1.05);box-shadow:0 6px 20px rgba(196,30,58,0.6)}
+       .output{background:rgba(0,0,0,0.3);padding:15px;border-radius:10px;margin-top:15px;min-height:60px;border-left:4px solid #c41e3a;font-size:1.1em;line-height:1.5}
+       .wheel-container{position:relative;width:250px;height:250px;margin:20px auto}
+       .wheel{width:100%;height:100%;border-radius:50%;position:relative;overflow:hidden;transition:transform 4s cubic-bezier(0.17,0.67,0.12,0.99);box-shadow:0 0 30px rgba(196,30,58,0.6)}
+       .wheel-section{position:absolute;width:50%;height:50%;transform-origin:100% 100%;clip-path:polygon(0 0,100% 0,100% 100%);display:flex;align-items:center;justify-content:center;font-size:0.8em;font-weight:bold;text-shadow:1px 1px 2px rgba(0,0,0,0.8)}
+       .pointer{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:30px solid #c41e3a;z-index:10;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.5))}
+       .emoji-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:15px 0}
+       .emoji-btn{font-size:2em;background:rgba(255,255,255,0.1);border:2px solid transparent;border-radius:10px;cursor:pointer;transition:all 0.2s;padding:10px}
+       .emoji-btn:hover{transform:scale(1.2);background:rgba(255,255,255,0.2);border-color:#c41e3a}
+       .emoji-btn.selected{border-color:#ffd700;background:rgba(255,215,0,0.3);transform:scale(1.1)}
+       .memory-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px}
+       .card-item{background:linear-gradient(135deg,#c41e3a,#8b0000);aspect-ratio:1;border-radius:10px;cursor:pointer;transition:all 0.3s;position:relative;transform-style:preserve-3d;font-size:2em;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 8px rgba(0,0,0,0.3)}
+       .card-item.flipped{background:linear-gradient(135deg,#1e3a8a,#0ea5e9);transform:rotateY(180deg)}
+       .card-item.matched{opacity:0;pointer-events:none;transform:scale(0)}
+       .card-content{backface-visibility:hidden;position:absolute;width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+       .card-back{transform:rotateY(180deg)}
+       .quiz-option{display:block;width:100%;padding:12px;margin:8px 0;background:rgba(255,255,255,0.1);border:2px solid rgba(255,255,255,0.2);border-radius:8px;color:#fff;cursor:pointer;transition:all 0.3s;text-align:left}
+       .quiz-option:hover{background:rgba(196,30,58,0.3);border-color:#c41e3a;transform:translateX(10px)}
+       .web-shooter{position:fixed;pointer-events:none;z-index:1000}
+       .web-line{stroke:#fff;stroke-width:3;fill:none;opacity:0.8;filter:drop-shadow(0 0 5px #87ceeb)}
+       @keyframes thwip{0%{transform:scale(0);opacity:1}100%{transform:scale(1);opacity:0}}
+       .thwip-effect{position:fixed;width:30px;height:30px;background:radial-gradient(circle,#fff 0%,transparent 70%);border-radius:50%;pointer-events:none;animation:thwip 0.5s ease-out;z-index:999}
+       .hidden{display:none}
+   </style>
 </head>
 <body>
+   <div class="container">
+       <h1>🕷️ FunZone Hub</h1>
+       <p class="subtitle">Far From Home Edition • Ready for Adventure?</p>
+       
+       <div class="card">
+           <h2>🎯 Random Question</h2>
+           <button class="btn" onclick="randomQ()">Generate Question</button>
+           <div class="output" id="rq">Click to get a fun question!</div>
+       </div>
+       
+       <div class="card">
+           <h2>🧠 Mini Quiz</h2>
+           <div id="quiz-container">
+               <button class="btn" onclick="startQuiz()">Start Quiz</button>
+           </div>
+           <div class="output hidden" id="quiz-result"></div>
+       </div>
+       
+       <div class="card">
+           <h2>💝 Compliment Machine</h2>
+           <button class="btn" onclick="compliment()">Get Compliment</button>
+           <div class="output" id="comp">Tap for a boost!</div>
+       </div>
+       
+       <div class="card">
+           <h2>🎡 Mystery Wheel</h2>
+           <div class="wheel-container">
+               <div class="pointer"></div>
+               <div class="wheel" id="wheel"></div>
+           </div>
+           <button class="btn" onclick="spinWheel()">SPIN!</button>
+           <div class="output" id="wheel-res">Spin to reveal your challenge!</div>
+       </div>
+       
+       <div class="card">
+           <h2>📖 Emoji Story Maker</h2>
+           <p>Select 3-5 emojis:</p>
+           <div class="emoji-grid" id="emoji-grid"></div>
+           <button class="btn" onclick="makeStory()">Create Story</button>
+           <div class="output" id="story">Your story appears here...</div>
+       </div>
+       
+       <div class="card">
+           <h2>🎴 Memory Match</h2>
+           <p>Matches: <span id="matches">0</span>/6</p>
+           <div class="memory-grid" id="memory-grid"></div>
+           <button class="btn" onclick="initMemory()">New Game</button>
+       </div>
+       
+       <div class="card">
+           <h2>📚 Daily Fun Fact</h2>
+           <div class="output" id="fact" style="border-color:#ffd700;background:rgba(255,215,0,0.1)">Loading today's fact...</div>
+           <button class="btn" onclick="newFact()" style="margin-top:10px">New Fact</button>
+       </div>
+   </div>
 
-    <nav>
-        <div class="logo" onclick="closeReader()">DUBMANGA</div>
-        <input type="text" id="search" placeholder="Search..." oninput="filterManga(this.value)">
-    </nav>
-
-    <div class="container" id="library">
-        <div class="hero">
-            <h1>Solo Leveling</h1>
-            <p>Follow Sung Jin-Woo's journey from the weakest hunter to the Shadow Monarch. Experience both seasons with full English dub.</p>
-            <button class="btn btn-solo" onclick="openReader('Solo Leveling Season 1')">Read Season 1</button>
-            <button class="btn btn-solo" onclick="openReader('Solo Leveling Season 2')" style="margin-left: 10px; background: #5a189a;">Read Season 2</button>
-        </div>
-
-        <h2>⚔️ Solo Leveling</h2>
-        <div class="grid" id="soloGrid"></div>
-
-        <h2>🔥 Trending Anime</h2>
-        <div class="grid" id="trending"></div>
-
-        <h2>✨ New Dubs</h2>
-        <div class="grid" id="new"></div>
-    </div>
-
-    <div class="reader" id="reader">
-        <div class="reader-header">
-            <button class="btn" onclick="closeReader()">← Back</button>
-            <span id="rTitle">Title</span>
-            <button class="btn" id="audioBtn">🔊 Audio On</button>
-        </div>
-        
-        <button class="nav-btn prev" onclick="changePage(-1)">‹</button>
-        <button class="nav-btn next" onclick="changePage(1)">›</button>
-        
-        <div class="reader-content" id="pages"></div>
-    </div>
-
-    <script>
-        // Character images (using reliable anime image hosting)
-        const chars = {
-            jinwoo: 'https://wallpapers.com/images/hd/solo-leveling-sung-jin-woo-purple-fan-art-0c140v4k3e4s7q2u.jpg',
-            cha: 'https://wallpapers.com/images/hd/solo-leveling-cha-hae-in-pink-eyes-7q2u4x9m1n3p8k5j.jpg',
-            igris: 'https://wallpapers.com/images/hd/solo-leveling-igris-red-knight-9v8n2m4k1j7h3g6f.jpg',
-            beru: 'https://wallpapers.com/images/hd/solo-leveling-beru-ant-king-2w4e6r8t0y1u3i5o.jpg',
-            gojo: 'https://wallpapers.com/images/hd/jujutsu-kaisen-satoru-gojo-white-hair-6e5r7t9y2u4i8o1p.jpg',
-            luffy: 'https://wallpapers.com/images/hd/one-piece-monkey-d-luffy-smile-3q5w7e9r2t6y1u4i.jpg',
-            goku: 'https://wallpapers.com/images/hd/dragon-ball-z-goku-ultra-instinct-8i2u4y6t1r3e5w7q.jpg',
-            tanjiro: 'https://wallpapers.com/images/hd/demon-slayer-tanjiro-kamado-green-checkered-5t8y2u4i6o1p9l3k.jpg',
-            levi: 'https://wallpapers.com/images/hd/attack-on-titan-levi-ackerman-omni-directional-7h3j5k9l2m4n8b1v.jpg',
-            kaneki: 'https://wallpapers.com/images/hd/tokyo-ghoul-ken-kaneki-white-hair-mask-4g7h2j5k8l1m9n3b.jpg',
-            eren: 'https://wallpapers.com/images/hd/attack-on-titan-eren-yeager-titan-form-9k2l5m8n1b4v7c3x.jpg',
-            itadori: 'https://wallpapers.com/images/hd/jujutsu-kaisen-yuji-itadori-pink-hair-6j9k2l5m8n1b4v7c.jpg'
-        };
-
-        const manga = [
-            // Solo Leveling
-            { t: "Solo Leveling S1", ch: 110, g: "Action", solo: true, season: 1, char: 'jinwoo', desc: "The Weakest Hunter" },
-            { t: "Solo Leveling S2", ch: 88, g: "Action", solo: true, season: 2, char: 'igris', desc: "Rise of the Monarch" },
-            { t: "Solo Leveling: Ragnarok", ch: 45, g: "Action", solo: true, season: 3, char: 'beru', desc: "Aftermath" },
-            
-            // Trending
-            { t: "Jujutsu Kaisen", ch: 243, g: "Dark Fantasy", tr: true, char: 'gojo' },
-            { t: "One Piece", ch: 1098, g: "Adventure", tr: true, char: 'luffy' },
-            { t: "Dragon Ball Super", ch: 103, g: "Action", tr: true, char: 'goku' },
-            { t: "Demon Slayer", ch: 205, g: "Dark Fantasy", tr: true, char: 'tanjiro' },
-            
-            // New
-            { t: "Attack on Titan", ch: 139, g: "Dark Fantasy", new: true, char: 'levi' },
-            { t: "Tokyo Ghoul", ch: 143, g: "Horror", new: true, char: 'kaneki' },
-            { t: "Chainsaw Man", ch: 157, g: "Dark Fantasy", new: true, char: 'eren' },
-            { t: "My Hero Academia", ch: 423, g: "Superhero", new: true, char: 'itadori' }
-        ];
-
-        const soloLines = {
-            1: [
-                { txt: "I alone level up.", actor: "Sung Jin-Woo (Aleks Le)" },
-                { txt: "Arise.", actor: "System Voice" },
-                { txt: "I will protect my family... no matter the cost.", actor: "Sung Jin-Woo" },
-                { txt: "The weak have no rights.", actor: "Kang Taeshik" },
-                { txt: "Shadow extraction successful.", actor: "System Voice" }
-            ],
-            2: [
-                { txt: "I am the Shadow Monarch.", actor: "Sung Jin-Woo" },
-                { txt: "My liege... your wish is my command.", actor: "Igris (Kaiji Tang)" },
-                { txt: "The Monarchs are coming. We must prepare.", actor: "Thomas Andre" },
-                { txt: "Beru, annihilate them.", actor: "Sung Jin-Woo" },
-                { txt: "It is an honor to serve you, my king.", actor: "Beru" }
-            ]
-        };
-
-        const regularLines = [
-            { txt: "I won't forgive anyone who hurts my friends!", actor: "Aleks Le (EN)" },
-            { txt: "You're already dead.", actor: "Matthew Mercer (EN)" },
-            { txt: "I will become the Pirate King!", actor: "Colleen Clinkenbeard (EN)" },
-            { txt: "Plus Ultra!", actor: "Justin Briner (EN)" },
-            { txt: "I am the hope of the universe!", actor: "Sean Schemmel (EN)" }
-        ];
-
-        let current = 1, total = 5, isSolo = false, currentSeason = 1;
-
-        function render() {
-            const solo = document.getElementById('soloGrid');
-            const tr = document.getElementById('trending');
-            const ne = document.getElementById('new');
-            
-            solo.innerHTML = '';
-            tr.innerHTML = '';
-            ne.innerHTML = '';
-
-            manga.forEach(m => {
-                const div = document.createElement('div');
-                div.className = m.solo ? 'card solo' : 'card';
-                div.onclick = () => openReader(m.t, m.solo, m.season);
-                
-                const img = chars[m.char] || chars.jinwoo;
-                const seasonBadge = m.solo ? `<span class="season-badge">S${m.season}</span>` : '';
-                const badgeClass = m.solo ? 'badge badge-solo' : 'badge';
-                
-                div.innerHTML = `
-                    <div class="cover" style="background-image: url('${img}');">
-                        ${seasonBadge}
-                        <span class="${badgeClass}">${m.solo ? 'SOLO' : 'DUB'}</span>
-                        <div class="char-name">${m.desc || m.g}</div>
-                    </div>
-                    <div class="info">
-                        <div class="title">${m.t}</div>
-                        <div class="meta">
-                            <span>${m.g}</span>
-                            <span class="${m.solo ? 'solo-chapters' : 'chapters'}">${m.ch} Ch</span>
-                        </div>
-                    </div>
-                `;
-                
-                if (m.solo) solo.appendChild(div);
-                else if (m.tr) tr.appendChild(div);
-                else if (m.new) ne.appendChild(div);
-            });
-        }
-
-        function filterManga(v) {
-            const term = v.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => {
-                const txt = c.querySelector('.title').textContent.toLowerCase();
-                c.style.display = txt.includes(term) ? 'block' : 'none';
-            });
-        }
-
-        function openReader(t, solo = false, season = 1) {
-            isSolo = solo;
-            currentSeason = season;
-            document.getElementById('rTitle').textContent = t;
-            document.getElementById('reader').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            
-            const reader = document.getElementById('reader');
-            if (solo) reader.classList.add('solo-mode');
-            else reader.classList.remove('solo-mode');
-            
-            const audioBtn = document.getElementById('audioBtn');
-            audioBtn.textContent = solo ? '🔊 Solo Leveling Audio' : '🔊 Audio On';
-            if (solo) {
-                audioBtn.style.background = 'var(--solo)';
-                audioBtn.style.boxShadow = '0 0 20px rgba(123,44,191,0.4)';
-            } else {
-                audioBtn.style.background = 'var(--accent)';
-                audioBtn.style.boxShadow = 'none';
-            }
-            
-            current = 1;
-            renderPages();
-        }
-
-        function closeReader() {
-            document.getElementById('reader').style.display = 'none';
-            document.body.style.overflow = 'auto';
-            document.getElementById('reader').classList.remove('solo-mode');
-        }
-
-        function renderPages() {
-            const p = document.getElementById('pages');
-            p.innerHTML = '';
-            const lines = isSolo ? soloLines[currentSeason] || soloLines[1] : regularLines;
-            
-            for(let i=1; i<=total; i++) {
-                const l = lines[i % lines.length];
-                const bg = isSolo ? `background: linear-gradient(135deg, #1a0b2e, #240046);` : '';
-                p.innerHTML += `
-                    <div class="page">
-                        <div class="page-img" style="${bg}">
-                            <span style="color: #444; font-size: 1.5rem;">${isSolo ? '⚔️' : '📖'} Page ${i}</span>
-                        </div>
-                        <div class="dub-bar">
-                            <div class="actor">
-                                ${l.actor}
-                                <span class="waves">
-                                    <span class="wave"></span>
-                                    <span class="wave"></span>
-                                    <span class="wave"></span>
-             
+   <script>
+       const questions=["Would you rather fight Molten Man or Hydro-Man?","What superpower would you choose: Spider-Sense or Web Wings?","Would you rather live in Venice or Prague?","Be invisible for a day or super strong?","Travel to space or the deep ocean?","Have EDITH glasses or Iron Man suit?","Be Peter's classmate or Nick Fury's agent?","Fight in London or New York?","Have Mysterio's powers or Spider-Man's?","Be a hero in Europe or stay in Queens?"],
+       compliments=["You're more amazing than Spider-Man's agility!","Your smile is brighter than Iron Man's repulsors!","You've got the heart of a hero!","You're spectacular! (Yes, like the movie)","Your creativity is Mysterio-level (but real)!","You're stronger than you think, true hero!","You light up rooms like EDITH targets threats!","Your kindness is your true superpower!","You're the MJ to someone's Peter Parker!","You handle challenges like Spidey handles bad guys!"],
+       wheelItems=["Do 10 jumping jacks!","Tell a joke to someone!","Draw Spider-Man in 30 seconds!","Take a selfie making a web-shooting pose!","Name 5 Marvel movies in 10 seconds!","Do your best superhero pose!","Compliment the next person you see!","Say 'thwip thwip' 3 times fast!"],
+       emojis=['🕷️','🕸️','🎭','🤖','⚡','🦸','🎬','🌍','✈️','🎒','📱','🕶️','🔥','💧','🌪️','🤖'],
+       facts=["Spider-Man: FFH was the first Spidey film to gross $1 billion!","The 'Night Monkey' disguise was improvised on set!","Jake Gyllenhaal (Mysterio) was almost Spider-Man in 2002!","The movie features 4 Elementals from comics!","Tom Holland did most of his own stunts!","The Prague scenes were filmed in Czech Republic!","Mysterio's fishbowl helmet is comic-accurate!","The mid-credit scene shocked even the actors!","Happy's 'Peter Tingle' joke was unscripted!","The movie takes place after Endgame's events!"],
+       quizData=[{q:"What's Peter's school trip destination?",a:["Paris","Venice","London","Prague"],c:1},{q:"Who is the main villain?",a:["Vulture","Mysterio","Green Goblin","Doctor Octopus"],c:1},{q:"What AI system does Peter inherit?",a:["JARVIS","FRIDAY","EDITH","KAREN"],c:2},{q:"Which Elemental attacks Venice?",a:["Molten Man","Hydro-Man","Cyclone","Sandman"],c:1},{q:"Who directs S.H.I.E.L.D. in this film?",a:["Nick Fury","Maria Hill","Talos","Coulson"],c:2}];
+       
+       let selectedEmojis=[],currentQuiz=0,quizScore=0,memoryCards=[],flippedCards=[],matchedPairs=0;
+       
+       function randomQ(){document.getElementById('rq').textContent=questions[Math.floor(Math.random()*questions.length)]}
+       function compliment(){document.getElementById('comp').textContent=compliments[Math.floor(Math.random()*compliments.length)]}
+       
+       function initWheel(){const w=document.getElementById('wheel');w.innerHTML='';wheelItems.forEach((item,i)=>{const el=document.createElement('div');el.className='wheel-section';el.style.transform=`rotate(${i*(360/wheelItems.length)}deg)`;el.style.background=`hsl(${i*(360/wheelItems.length)},70%,50%)`;el.textContent=item;w.appendChild(el)})}
+       function spinWheel(){const w=document.getElementById('wheel'),r=Math.floor(Math.random()*360+720);w.style.transform=`rotate(${r}deg)`;setTimeout(()=>{const idx=Math.floor(((r%360)/(360/wheelItems.length)));document.getElementById('wheel-res').textContent="Challenge: "+wheelItems[idx]},4000)}
+       
+       function initEmojis(){const g=document.getElementById('emoji-grid');g.innerHTML='';emojis.forEach(e=>{const b=document.createElement('button');b.className='emoji-btn';b.textContent=e;b.onclick=()=>{if(b.classList.contains('selected')){b.classList.remove('selected');selectedEmojis=selectedEmojis.filter(x=>x!==e)}else if(selectedEmojis.length<5){b.classList.add('selected');selectedEmojis.push(e)}};g.appendChild(b)})}
+       function makeStory(){if(selectedEmojis.length<2){document.getElementById('story').textContent="Select at least 2 emojis!";return}const starters=["Once upon a time,","In a world far from home,","Peter Parker woke up to find","During the school trip,","Mysterio revealed that"],actions=["fought a villain using","discovered a secret about","had to save the day with","accidentally activated","made friends with"],endings=["and saved Europe!","then went back to Queens.","and joined the Avengers!","but it was all an illusion.","and got a selfie with Nick Fury!"];document.getElementById('story').textContent=starters[Math.floor(Math.random()*starters.length)]+" "+selectedEmojis.join(" ")+" "+actions[Math.floor(Math.random()*actions.length)]+" them, "+endings[Math.floor(Math.random()*endings.length)]}
+       
+       function initMemory(){const g=document.getElementById('memory-grid'),pairs=['🕷️','🕸️','🎭','🤖','⚡','🦸'];let cards=[...pairs,...pairs].sort(()=>Math.random()-0.5);g.innerHTML='';memoryCards=[];flippedCards=[];matchedPairs=0;document.getElementById('matches').textContent='0';cards.forEach((c,i)=>{const d=document.createElement('div');d.className='card-item';d.dataset.card=c;d.dataset.index=i;d.innerHTML=`<div class='card-content card-back'>${c}</div><div class='card-content'>🎴</div>`;d.onclick=()=>flipCard(d);g.appendChild(d);memoryCards.push(d)})}
+       function flipCard(card){if(flippedCards.length<2&&!card.classList.contains('flipped')&&!card.classList.contains('matched')){card.classList.add('flipped');flippedCards.push(card);if(flippedCards.length===2){setTimeout(checkMatch,800)}}}
+       function checkMatch(){const[c1,c2]=flippedCards;if(c1.dataset.card===c2.dataset.card){c1.classList.add('matched');c2.classList.add('matched');matchedPairs++;document.getElementById('matches').textContent=matchedPairs;if(matchedPairs===6)setTimeout(()=>alert('🎉 You won! Great memory!'),500)}else{c1.classList.remove('flipped');c2.classList.remove('flipped')}flippedCards=[]}
+       
+       function startQuiz(){const c=document.getElementById('quiz-container'),r=document.getElementById('quiz-result');if(currentQuiz>=quizData.length){r.innerHTML=`Quiz Complete! Score: ${quizScore}/${quizData.length}<br><button class='btn' onclick='resetQuiz()'>Restart</button>`;r.classList.remove('hidden');c.innerHTML='';return}const q=quizData[currentQuiz];c.innerHTML=`<p><strong>Q${currentQuiz+1}:</strong> ${q.q}</p>`;q.a.forEach((ans,i)=>{const b=document.createElement('button');b.className='quiz-option';b.textContent=ans;b.onclick=()=>{if(i===q.c)quizScore++;currentQuiz++;startQuiz()};c.appendChild(b)})}
+       function resetQuiz(){currentQuiz=0;quizScore=0;document.getElementById('quiz-result').classList.add('hidden');document.getElementById('quiz-container').innerHTML='<button class="btn" onclick="startQuiz()">Start Quiz</button>'}
+       
+       function newFact(){document.getElementById('fact').textContent=facts[Math.floor(Math.random()*facts.length)]}
+       
+       document.addEventListener('click',e=>{const t=document.createElement('div');t.className='thwip-effect';t.style.left=e.clientX-15+'px';t.style.top=e.clientY-15+'px';document.body.appendChild(t);setTimeout(()=>t.remove(),500)});
+       
+       initWheel();initEmojis();initMemory();newFact();
+   </script>
+</body>
+</html>
